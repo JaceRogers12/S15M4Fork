@@ -1,19 +1,27 @@
-// const db = require("../../data/db-config.js");
+const db = require("../../data/db-config.js");
 
 function getAll() {
-    console.log("getAll connected")
+    return db("pokemon");
 }
 
 function getById(id) {
-    console.log("getById connected")
+    return db("pokemon")
+        .where({id: id})
+        .first();
 }
 
 async function insert(payload) {
-    console.log("insert connected")
+    const [id] = await db("pokemon")
+        .insert(payload);
+    return await getById(id);
 }
 
 async function remove(id) {
-    console.log("remove connected")
+    const deletedPokemon = await getById(id);
+    await db("pokemon")
+        .where({id: id})
+        .del();
+    return deletedPokemon;
 }
 
 module.exports = {

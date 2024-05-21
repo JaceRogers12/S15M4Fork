@@ -5,7 +5,7 @@ const common = {
         directory: "./data/migration"
     },
     seeds: {
-        connection: "./data/seed"
+        directory: "./data/seed"
     }
 };
 
@@ -18,7 +18,7 @@ module.exports = {
     },
     testing: {
         ...common,
-        directory: {
+        connection: {
             filename: "./data/testing.db3"
         }
     },

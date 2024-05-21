@@ -4,19 +4,32 @@ const mids = require("./pokemon-middleware.js");
 
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-    Pokemon.getAll();
-    res.status(200).json({message: "get pokemon connected"})
+router.get("/", async (req, res, next) => {
+    await Pokemon.getAll()
+        .then(pokemon => {
+            res.status(200).json(pokemon)
+        }).catch(err => {
+            next(err)
+        })
+    
 })
 
 router.post("/", mids.verifyPayload, async (req, res, next) => {
-    Pokemon.insert(req.payload);
-    res.status(200).json({message: "post pokemon connected"})
+    await Pokemon.insert(req.body)
+        .then(pokemon => {
+            res.status(201).json(pokemon)
+        }).catch(err => {
+            next(err)
+        })
 })
 
 router.delete("/:id", mids.verifyId, async (req, res, next) => {
-    Pokemon.remove(req.params.id);
-    res.status(200).json({message: "delete pokemon connected"})
+    await Pokemon.remove(req.params.id)
+        .then(pokemon => {
+            res.status(200).json(pokemon)
+        }).catch(err => {
+            next(err)
+        })
 })
 
 module.exports = router;
